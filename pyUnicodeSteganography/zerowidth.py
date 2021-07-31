@@ -1,5 +1,4 @@
-zwc_4 = ["\u200B", "\u200C", "\u200E", "\u202A"]
-zwc_delimiter = '\u2062\u2062'
+zwc_4 = ["\u200C", "\u200D", "\u200E", "\u200F"]
 
 def encode(msg, binary=False, character_set=None):
     '''
@@ -31,6 +30,9 @@ def encode(msg, binary=False, character_set=None):
     return code
 
 def decode(code, binary=False, character_set=None):
+    '''
+    Decode a message using specified set of zero width characters.
+    '''
     msg_bytes = []
     if not character_set:
         character_set = zwc_4
