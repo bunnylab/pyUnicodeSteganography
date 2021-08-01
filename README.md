@@ -3,15 +3,13 @@
 Experimental python package implementing several methods of unicode steganography (concealing
 a message within text by sneaky use of the unicode character set).
 
-## Build/Install
+## Install
 
-- Clone this repository
-
-- Build: `python3 -m build`  or  `python3 setup.py build`
-
-- Install: `python3 -m pip install .`  or  `python3 setup.py install`
+`pip install pyUnicodeSteganography`
 
 ## Test
+
+Clone this repository.
 
 `python3 setup.py test`
 
