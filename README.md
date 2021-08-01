@@ -63,11 +63,26 @@ string. This method strategically replaces characters in a string with lookalike
 secret_text = usteg.encode("some text", "a", method="lookalike")
 secret_binary = usteg.encode("some text", b'\x00', method="lookalike", binary=True)
 ```
+
+## Platform Example Twitter
+
+```python
+twitter_encoded = stego.encode("hello friend this is a perfectly normal conversation", "attack at dawn", replacements="\u200b\u200c\u200d\u2060")
+twitter_decoded = stego.decode(twitter_encoded, replacements="\u200b\u200c\u200d\u2060")
+```
+
+Different platforms have different rules for dealing with zero width chars and other unicode nonsense. Twitter for example removes some of the characters we use in our defaults. Some experiments 
+show we can use a different set successfully. When trying to send messages on a new platform 
+play around and see what characters are allowed if the defaults don't work. 
+
+
 ### Data Capacity 
 
-Zero width and SNOW methods of steganography work by inserting new characters into a string and so 
-can encode any amount of data at the cost of increasing the size of the text. Lookalike steganography replaces existing characters so the data you can encode in a string is limited by the 
-number of substitutable characters in the string. The rough formula is 1 byte or 1 char / 8 substitutable chars. We also included a utility method that can calculate this for arbitrary strings.
+SNOW method for steganography works by inserting new characters at the end of a string and so 
+can encode any amount of data at the cost of increasing the size of the text. Zero width and lookalike steganography require a certain amount of text for data to be encoded. Many platforms limit the number 
+of consecutive zero width characters in a text, to evade this our default zw encoding splits the zw 
+characters into groups of length 4 and inserts them between printable characters. This gives us roughly 
+1 byte of encoded data per printable character. For lookalikes the rough formula is 1 byte per 8 substitutable chars.
 
 ```python
 from pyUnicodeSteganography.lookalikes import capacity 
@@ -77,13 +92,13 @@ byte_capacity = capacity(my_string)
 
 ### Data Corruption 
 
-This method has a couple of limitiations. It cannot properly handle unicode strings which contain
-any of the characters it uses as lookalikes. Encoding data into strings which contain these will 
-corrupt the data unpredictably. 
+Our zero width encoding method has a couple of limitiations. It cannot properly handle unicode strings 
+which contain any of the characters it uses as lookalikes. Encoding data into strings which contain 
+these will corrupt the data unpredictably. 
 
 ### Padded Output
 
-The method also cannot determine where the 'encoded' portion of a 
+The lookalikes method also cannot determine where the 'encoded' portion of a 
 string ends if you encode data into a string with more 'capacity' than you use. The returned bytes/string will instead be null padded up to the total capacity of the string you decode. Keep this 
 in mind if encoding binary data. 
 
