@@ -2,6 +2,7 @@ import re
 import pyUnicodeSteganography.zerowidth as zerowidth
 import pyUnicodeSteganography.lookalikes as lookalikes
 import pyUnicodeSteganography.snow as snow
+import pyUnicodeSteganography.emoji as emoji
 
 from pyUnicodeSteganography.zerowidth import zwc_4
 
@@ -28,14 +29,17 @@ def encode(unencoded_string, msg, method="zw", binary=False, replacements=None, 
 
         return out
 
-    if method == "snow":
+    elif method == "snow":
         if not delimiter:
             delimiter = '\t\t\t'
         code = snow.encode(msg, character_set=replacements, binary=binary)
         return unencoded_string + delimiter + code
 
-    if method == "lookalike":
+    elif method == "lookalike":
         return lookalikes.encode(unencoded_string, msg, substitution_table=replacements, binary=binary)
+
+    elif method == "emoji":
+        return emoji.encode(msg, binary=binary)
 
     else:
         raise Exception("Method: {}, is not supported".format(method))
@@ -69,4 +73,5 @@ def decode(encoded_string, method="zw", binary=False, replacements=None, delimit
     elif method == "lookalike":
         return lookalikes.decode(encoded_string, substitution_table=replacements, binary=binary)
 
-
+    elif method == "emoji":
+        return emoji.decode(encoded_string, binary=binary)

@@ -62,6 +62,18 @@ secret_text = usteg.encode("some text", "a", method="lookalike")
 secret_binary = usteg.encode("some text", b'\x00', method="lookalike", binary=True)
 ```
 
+## Emoji 
+
+Simple emoji substitution for character or bytes. Returns a long string of emojis
+that can be inserted into a message. Characters are visible but this is still 
+sometimes considered a steganography method as generated strings can be indistinguishable from teenagers in some cases.
+
+```python
+secret_text = usteg.encode("", "secret", method="emoji")
+secret_binary = usteg.encode("", b'\x00', method="emoji", binary=True)
+```
+
+
 ## Platform Example Twitter
 
 ```python
@@ -110,9 +122,8 @@ of chars and their lookalikes to "replacements" for lookalikes.
 
 ```python
 character_set = ["\u200B", "\u200C", "\u200E", "\u0000"]
-delimiter = "\u2062"
-secret_text = usteg.encode("some text", "secret", replacements=character_set, delimiter=delimiter)
-secret = usteg.decode(secret_text, replacements=character_set, delimiter=delimiter)
+secret_text = usteg.encode("some text", "secret", replacements=character_set)
+secret = usteg.decode(secret_text, replacements=character_set)
 ```
 
 ```python
